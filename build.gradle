@@ -1,0 +1,107 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id "org.sonarqube" version "2.8"
+    id 'jacoco'
+    id 'signing'
+}
+
+def ossrhCredentials = {
+    username = project.hasProperty('ossrhUsername') ? project.getProperty('ossrhUsername') : ''
+    password = project.hasProperty('ossrhPassword') ? project.getProperty('ossrhPassword') : ''
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+ext.pomObject = {}
+
+subprojects {
+    apply plugin: 'java-library'
+
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    dependencies {
+        compileOnly (
+                "org.projectlombok:lombok:${lombokVersion}"
+        )
+        annotationProcessor (
+                "org.projectlombok:lombok:${lombokVersion}"
+        )
+        implementation (
+                "org.apache.logging.log4j:log4j-api:${log4jVersion}",
+                "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+        )
+        testCompileOnly (
+                "org.projectlombok:lombok:${lombokVersion}"
+        )
+        testAnnotationProcessor (
+                "org.projectlombok:lombok:${lombokVersion}"
+        )
+        testImplementation (
+                "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
+                "org.junit.jupiter:junit-jupiter-params:${junitVersion}",
+                "org.mockito:mockito-core:${mockitoVersion}",
+                "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+        )
+        testRuntimeOnly (
+                "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+        )
+    }
+
+    sonarqube {
+        properties {
+            property "sonar.projectKey", "VladislavSevruk_RecursiveAssertion"
+        }
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            html.enabled true
+        }
+    }
+
+    test {
+        useJUnit()
+        useJUnitPlatform()
+        maxHeapSize = '64m'
+    }
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                artifactId = "${project.name}"
+                from components.java
+                pom pomObject
+            }
+        }
+        repositories {
+            maven {
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials(ossrhCredentials)
+            }
+            maven {
+                url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                credentials(ossrhCredentials)
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.maven
+    }
+}

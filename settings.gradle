@@ -1,0 +1,17 @@
+plugins {
+    id "com.gradle.enterprise" version "3.2.1"
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
+
+include 'recursive-assertion-assertj'
+include 'recursive-assertion-core'
+include 'recursive-assertion-junit5'
+include 'recursive-assertion-testng'
+
+rootProject.name = 'recursive-assertion'
