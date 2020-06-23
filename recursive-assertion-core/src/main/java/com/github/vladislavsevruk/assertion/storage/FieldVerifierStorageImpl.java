@@ -81,9 +81,9 @@ public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
         if (targetTypeIndex == -1) {
             logger.info("Target type is not present at list, field verifier will be added to list end.");
             add(verifiers.size(), customFieldVerifier);
-            return;
+        } else {
+            add(targetTypeIndex + 1, customFieldVerifier);
         }
-        add(targetTypeIndex + 1, customFieldVerifier);
         VERIFIERS_LOCK.writeLock().unlock();
     }
 
@@ -97,9 +97,9 @@ public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
         if (targetTypeIndex == -1) {
             logger.info("Target type is not present at list, field verifier will be added to list end.");
             add(verifiers.size(), customFieldVerifier);
-            return;
+        } else {
+            add(targetTypeIndex, customFieldVerifier);
         }
-        add(targetTypeIndex, customFieldVerifier);
         VERIFIERS_LOCK.writeLock().unlock();
     }
 
@@ -124,6 +124,8 @@ public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
             logger.info("Received field verifier is already present at list so it's copy will not be added.");
             return;
         }
+        logger.debug(
+                () -> String.format("Added '%s' field verifier.", customFieldVerifier.getClass().getName()));
         verifiers.add(index, customFieldVerifier);
     }
 
