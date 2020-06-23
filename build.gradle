@@ -18,10 +18,20 @@ allprojects {
     }
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectKey", "VladislavSevruk_RecursiveAssertion"
+    }
+}
+
 ext.pomObject = {}
 
 subprojects {
     apply plugin: 'java-library'
+    apply plugin: 'org.sonarqube'
+    apply plugin: 'jacoco'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     sourceCompatibility = "${javaVersion}"
     targetCompatibility = "${javaVersion}"
@@ -59,13 +69,9 @@ subprojects {
         )
     }
 
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "VladislavSevruk_RecursiveAssertion"
-        }
-    }
-
     jacocoTestReport {
+        dependsOn test
+        executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
         reports {
             xml.enabled true
             html.enabled true
@@ -77,9 +83,6 @@ subprojects {
         useJUnitPlatform()
         maxHeapSize = '64m'
     }
-
-    apply plugin: 'maven-publish'
-    apply plugin: 'signing'
 
     publishing {
         publications {
