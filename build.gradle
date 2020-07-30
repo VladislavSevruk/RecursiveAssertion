@@ -24,7 +24,7 @@ sonarqube {
     }
 }
 
-ext.pomObject = {}
+ext.pomObject = { -> return {} }
 
 subprojects {
     apply plugin: 'java-library'
@@ -81,9 +81,6 @@ subprojects {
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId = "${project.name}"
-                from components.java
-                pom pomObject
             }
         }
         repositories {
