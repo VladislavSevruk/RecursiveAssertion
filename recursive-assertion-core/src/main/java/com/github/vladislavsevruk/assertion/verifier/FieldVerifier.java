@@ -35,6 +35,7 @@ public interface FieldVerifier {
      * Checks if current implementation is able to verify received field values.
      *
      * @param verificationField <code>VerificationField</code> to verify.
+     * @param <T>               type of verification field value.
      * @return <code>true</code> if this implementation is able to verify received <code>VerificationField</code>,
      * <code>false</code> otherwise.
      */

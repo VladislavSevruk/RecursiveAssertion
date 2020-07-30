@@ -1,3 +1,12 @@
+dependencies {
+    compileOnly(
+            "org.projectlombok:lombok:${lombokVersion}"
+    )
+    annotationProcessor(
+            "org.projectlombok:lombok:${lombokVersion}"
+    )
+}
+
 ext.pomObject = {
     name = 'Recursive Assertion Core'
     description = 'This utility library contains core functionality for assertion of complex models using various settings and provide convenient error messages.'

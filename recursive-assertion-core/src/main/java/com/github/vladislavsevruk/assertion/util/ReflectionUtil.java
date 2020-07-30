@@ -95,6 +95,7 @@ public final class ReflectionUtil {
      * Checks if received class is one of classes that represent simple type value without valuable inner fields.
      *
      * @param clazz <code>Class</code> to check.
+     * @param <T>   value type.
      * @return <code>true</code> if class is one of simple types, <code>false</code> otherwise.
      */
     public static <T> boolean isSimpleType(Class<T> clazz) {

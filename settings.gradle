@@ -9,9 +9,6 @@ gradleEnterprise {
     }
 }
 
-include 'recursive-assertion-assertj'
-include 'recursive-assertion-core'
-include 'recursive-assertion-junit5'
-include 'recursive-assertion-testng'
+include 'recursive-assertion-assertj', 'recursive-assertion-core', 'recursive-assertion-junit5', 'recursive-assertion-testng'
 
 rootProject.name = 'recursive-assertion'
