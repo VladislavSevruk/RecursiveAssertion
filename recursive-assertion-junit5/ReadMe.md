@@ -3,7 +3,7 @@
 [![Code Coverage](https://sonarcloud.io/api/project_badges/measure?project=VladislavSevruk_RecursiveAssertion&metric=coverage)](https://sonarcloud.io/component_measures?id=VladislavSevruk_RecursiveAssertion&metric=coverage)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vladislavsevruk/recursive-assertion/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vladislavsevruk/recursive-assertion)
 
-### Recursive assertion for JUnit 5
+# Recursive assertion for JUnit 5
 This utility library helps to assert complex models using various settings and provide convenient error messages using 
 JUnit 5 AssertAll mechanism.
 

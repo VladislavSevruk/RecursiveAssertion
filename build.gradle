@@ -24,8 +24,6 @@ sonarqube {
     }
 }
 
-ext.pomObject = {}
-
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'org.sonarqube'
@@ -81,9 +79,6 @@ subprojects {
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId = "${project.name}"
-                from components.java
-                pom pomObject
             }
         }
         repositories {
