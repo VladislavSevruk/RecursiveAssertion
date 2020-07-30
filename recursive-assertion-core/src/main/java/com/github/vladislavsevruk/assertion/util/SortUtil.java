@@ -72,7 +72,7 @@ public final class SortUtil {
      * @param iterable          <code>Iterable</code> to sort.
      * @param comparatorStorage <code>ComparatorStorage</code> with comparators to use for elements sorting.
      * @param <T>               element type.
-     * @return sorted <code>Iterable</code> with same collection type (list -> list, set -> set, etc.).
+     * @return sorted <code>Iterable</code> with same collection type (list -&gt; list, set -&gt; set, etc.).
      */
     public static <T> Iterable<T> sort(Iterable<T> iterable, ComparatorStorage comparatorStorage) {
         return sort(iterable, () -> pickComparator(iterable, comparatorStorage));
@@ -85,7 +85,7 @@ public final class SortUtil {
      * @param comparatorStorage <code>ComparatorStorage</code> with comparators to use for elements sorting.
      * @param commonType        <code>Class</code> with common type of iterable elements.
      * @param <T>               element type.
-     * @return sorted <code>Iterable</code> with same collection type (list -> list, set -> set, etc.).
+     * @return sorted <code>Iterable</code> with same collection type (list -&gt; list, set -&gt; set, etc.).
      */
     public static <T> Iterable<T> sort(Iterable<T> iterable, ComparatorStorage comparatorStorage, Class<?> commonType) {
         return sort(iterable, () -> comparatorStorage.get(commonType));

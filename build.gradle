@@ -42,12 +42,6 @@ subprojects {
     }
 
     dependencies {
-        compileOnly (
-                "org.projectlombok:lombok:${lombokVersion}"
-        )
-        annotationProcessor (
-                "org.projectlombok:lombok:${lombokVersion}"
-        )
         implementation (
                 "org.apache.logging.log4j:log4j-api:${log4jVersion}",
                 "org.apache.logging.log4j:log4j-core:${log4jVersion}"
@@ -94,11 +88,9 @@ subprojects {
         }
         repositories {
             maven {
-                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                credentials(ossrhCredentials)
-            }
-            maven {
-                url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                def stagingRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = version.endsWith('-SNAPSHOT') ? snapshotsRepoUrl : stagingRepoUrl
                 credentials(ossrhCredentials)
             }
         }
