@@ -24,8 +24,6 @@ sonarqube {
     }
 }
 
-ext.pomObject = { -> return {} }
-
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'org.sonarqube'
