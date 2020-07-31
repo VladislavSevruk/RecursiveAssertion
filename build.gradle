@@ -18,10 +18,18 @@ allprojects {
     }
 }
 
-ext.pomObject = {}
+sonarqube {
+    properties {
+        property "sonar.projectKey", "VladislavSevruk_RecursiveAssertion"
+    }
+}
 
 subprojects {
     apply plugin: 'java-library'
+    apply plugin: 'org.sonarqube'
+    apply plugin: 'jacoco'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     sourceCompatibility = "${javaVersion}"
     targetCompatibility = "${javaVersion}"
@@ -32,12 +40,6 @@ subprojects {
     }
 
     dependencies {
-        compileOnly (
-                "org.projectlombok:lombok:${lombokVersion}"
-        )
-        annotationProcessor (
-                "org.projectlombok:lombok:${lombokVersion}"
-        )
         implementation (
                 "org.apache.logging.log4j:log4j-api:${log4jVersion}",
                 "org.apache.logging.log4j:log4j-core:${log4jVersion}"
@@ -59,13 +61,9 @@ subprojects {
         )
     }
 
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "VladislavSevruk_RecursiveAssertion"
-        }
-    }
-
     jacocoTestReport {
+        dependsOn test
+        executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
         reports {
             xml.enabled true
             html.enabled true
@@ -78,24 +76,16 @@ subprojects {
         maxHeapSize = '64m'
     }
 
-    apply plugin: 'maven-publish'
-    apply plugin: 'signing'
-
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId = "${project.name}"
-                from components.java
-                pom pomObject
             }
         }
         repositories {
             maven {
-                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                credentials(ossrhCredentials)
-            }
-            maven {
-                url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                def stagingRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = version.endsWith('-SNAPSHOT') ? snapshotsRepoUrl : stagingRepoUrl
                 credentials(ossrhCredentials)
             }
         }

@@ -5,7 +5,7 @@ addons:
   sonarcloud:
     organization: vladislavsevruk
     token:
-      secure:
+      secure: aaIiWY6W8NM4+588VVP+/zBMyheXyjXihyT5mhISJDtJ1sLoifQaU9Pq1KTe6Br7wBU9UcTiU2B4uq8WG31FnbRXdMTb86zAubkuUv+YK0uzHAZ0Igs71xiUq9gBTSAeKjmrbBwhtRcfBJ6J20HC8UjTzU84k7JfBtXWhXUP1otQUAYk8HaVvhFfa9hs84hfvbQNJCWLsMz75nVWvKMkEUrPMsESxuAqoDEgxUXs0ZtvqER7CGHUO1JZLEUNc321O/tVIbdGNXAEgNBguoUu8FJSsMvakuREYbuMSpBYYymlwU22kKB6vmOlvh5fkm9iywhnsdZIRgl9FG6cas6wbQaGWbXQAg6kwLCYaVy3xo+oYrhuF86GHpQxg4Zd1Zk9Q4D64ERHJmpxtKhkq87abNPGiCv2j5TEpznDrruJ63urBeBatld2jE/0Eb5YJcvNDuI01OEwbrPnAu+ov+eFIUA7yvgtvSe7iIDIGmU0yXKtwoX25+5zqlwprl4rV5RByHQ4xq0bWpqLYKH+3eiLfTQgIAINoV6PM3PN/44u2I/1mSjBIDa28SE3EbgjWCq01cybnBEobkQnc1muTBsos9Qb2tpAqvtyj8lWpVaJ/l9thVLpRZl85ZxdU8FPVP5CVtvrspFExFdhBe1byuBFOAzEowvnj78Qr7g0rSqd3M0=
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
