@@ -32,9 +32,7 @@ import com.github.vladislavsevruk.assertion.util.FieldPathMatcher;
 import com.github.vladislavsevruk.assertion.util.ReflectionUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -43,10 +41,8 @@ import java.util.Set;
 /**
  * Verifies value of map type.
  */
-@EqualsAndHashCode(exclude = "assertionContext")
+@Log4j2
 public class MapVerifier implements FieldVerifier {
-
-    private static final Logger logger = LogManager.getLogger(MapVerifier.class);
 
     private AssertionContext assertionContext;
 
@@ -68,7 +64,7 @@ public class MapVerifier implements FieldVerifier {
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying map.");
+        log.debug(() -> "Verifying map.");
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         Map<?, ?> expectedMap = (Map<?, ?>) verificationField.expected();
         Map<?, ?> actualMap = (Map<?, ?>) verificationField.actual();
@@ -87,7 +83,7 @@ public class MapVerifier implements FieldVerifier {
             if (!expected.containsKey(actualKey)) {
                 FieldTrace itemTrace = fieldTrace.key(actualKey);
                 if (FieldPathMatcher.isMatchAny(fieldPathsToIgnore, itemTrace)) {
-                    logger.debug(() -> String.format("Skipping element with '%s' field trace.", itemTrace));
+                    log.debug(() -> String.format("Skipping element with '%s' field trace.", itemTrace));
                     continue;
                 }
                 String failMessage = String.format("[%s] unexpected object with key <%s>", fieldTrace, actualKey);
@@ -102,7 +98,7 @@ public class MapVerifier implements FieldVerifier {
         for (Entry<?, ?> entry : expected.entrySet()) {
             FieldTrace itemTrace = fieldTrace.key(entry.getKey());
             if (FieldPathMatcher.isMatchAny(fieldPathsToIgnore, itemTrace)) {
-                logger.debug(() -> String.format("Skipping element with '%s' field trace.", itemTrace));
+                log.debug(() -> String.format("Skipping element with '%s' field trace.", itemTrace));
                 continue;
             }
             if (!actual.containsKey(entry.getKey())) {

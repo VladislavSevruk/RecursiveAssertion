@@ -32,19 +32,15 @@ import com.github.vladislavsevruk.assertion.util.ClassUtil;
 import com.github.vladislavsevruk.assertion.util.SortUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 
 /**
  * Verifies value of field with array type.
  */
-@EqualsAndHashCode(callSuper = true)
+@Log4j2
 public class ArrayVerifier extends ElementSequenceVerifier implements FieldVerifier {
-
-    private static final Logger logger = LogManager.getLogger(ArrayVerifier.class);
 
     public ArrayVerifier(AssertionContext assertionContext) {
         super(assertionContext);
@@ -64,7 +60,7 @@ public class ArrayVerifier extends ElementSequenceVerifier implements FieldVerif
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying array.");
+        log.debug(() -> "Verifying array.");
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         Object[] actualValues = ((Object[]) verificationField.actual());
         Object[] expectedValues = ((Object[]) verificationField.expected());
@@ -72,7 +68,7 @@ public class ArrayVerifier extends ElementSequenceVerifier implements FieldVerif
         verifyLength(commonSoftAssertion, actualValues, expectedValues, verificationField.trace());
         AssertionConfiguration assertionConfiguration = fieldVerificationConfiguration.getConfiguration();
         if (shouldBreakOnLengthInequality(assertionConfiguration, actualValues, expectedValues)) {
-            logger.debug(() -> "Breaking verifications on length inequality.");
+            log.debug(() -> "Breaking verifications on length inequality.");
             return;
         }
         verifyArrayElements(commonSoftAssertion, actualValues, expectedValues, assertionConfiguration,
@@ -101,7 +97,7 @@ public class ArrayVerifier extends ElementSequenceVerifier implements FieldVerif
             Object[] expectedValues, AssertionConfiguration assertionConfiguration, FieldTrace fieldTrace) {
         Class<?> commonExpectedType = ClassUtil.getCommonClass(expectedValues);
         if (assertionConfiguration.sortCollections()) {
-            logger.debug("Sorting arrays.");
+            log.debug("Sorting arrays.");
             SortUtil.sort(actualValues, assertionContext.getComparatorStorage(), commonExpectedType);
             SortUtil.sort(expectedValues, assertionContext.getComparatorStorage());
         }

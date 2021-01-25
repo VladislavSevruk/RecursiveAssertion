@@ -23,8 +23,7 @@
  */
 package com.github.vladislavsevruk.assertion.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -35,9 +34,8 @@ import java.util.function.Predicate;
 /**
  * Contains utility methods for reflection operations.
  */
+@Log4j2
 public final class ReflectionUtil {
-
-    private static final Logger logger = LogManager.getLogger(ReflectionUtil.class);
 
     private ReflectionUtil() {
     }
@@ -54,7 +52,7 @@ public final class ReflectionUtil {
             field.setAccessible(true);
             return field.get(object);
         } catch (IllegalAccessException iaEx) {
-            logger.error(() -> "Failed to get access to field " + field.getName(), iaEx);
+            log.error(() -> "Failed to get access to field " + field.getName(), iaEx);
             return null;
         } finally {
             field.setAccessible(isAccessible);
@@ -127,7 +125,7 @@ public final class ReflectionUtil {
             field.setAccessible(true);
             action.perform(field);
         } catch (IllegalAccessException iaEx) {
-            logger.error(() -> "Failed to get access to field " + field.getName(), iaEx);
+            log.error(() -> "Failed to get access to field " + field.getName(), iaEx);
         } finally {
             field.setAccessible(isAccessible);
         }

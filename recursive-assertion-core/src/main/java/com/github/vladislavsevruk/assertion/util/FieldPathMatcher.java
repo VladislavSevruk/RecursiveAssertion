@@ -25,8 +25,7 @@ package com.github.vladislavsevruk.assertion.util;
 
 import com.github.vladislavsevruk.assertion.field.FieldTrace;
 import com.github.vladislavsevruk.assertion.storage.IdentifierFieldStorage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Collection;
 
@@ -51,9 +50,8 @@ import java.util.Collection;
  *
  * @see IdentifierFieldStorage
  */
+@Log4j2
 public final class FieldPathMatcher {
-
-    private static final Logger logger = LogManager.getLogger(FieldPathMatcher.class);
 
     private FieldPathMatcher() {
     }
@@ -76,7 +74,7 @@ public final class FieldPathMatcher {
                 return false;
             }
         }
-        logger.debug(() -> String.format("Field path '%s' matches '%s' pattern.", fieldTrace, pattern));
+        log.debug(() -> String.format("Field path '%s' matches '%s' pattern.", fieldTrace, pattern));
         return true;
     }
 

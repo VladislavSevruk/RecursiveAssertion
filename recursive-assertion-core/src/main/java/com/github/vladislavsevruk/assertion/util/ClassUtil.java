@@ -23,8 +23,7 @@
  */
 package com.github.vladislavsevruk.assertion.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,10 +37,10 @@ import java.util.stream.StreamSupport;
 /**
  * Contains utility methods for getting superclasses and implemented interfaces.
  */
+@Log4j2
 public final class ClassUtil {
 
     private static final Comparator<Class<?>> SUPERCLASSES_COMPARATOR = getSuperclassesComparator();
-    private static final Logger logger = LogManager.getLogger(ClassUtil.class);
 
     private ClassUtil() {
     }
@@ -87,7 +86,7 @@ public final class ClassUtil {
     public static <T> int getIndexOfType(List<T> elements, Class<? extends T> targetType) {
         int targetTypeIndex = -1;
         if (targetType == null) {
-            logger.info("Target type is null.");
+            log.info("Target type is null.");
             return -1;
         }
         for (int i = 0; i < elements.size(); ++i) {
@@ -120,7 +119,7 @@ public final class ClassUtil {
         if (matchingSuperclasses.size() > 1) {
             matchingSuperclasses.sort(SUPERCLASSES_COMPARATOR);
         }
-        logger.debug(() -> String.format("Best matching superclass is '%s'.", matchingSuperclasses.get(0).getName()));
+        log.debug(() -> String.format("Best matching superclass is '%s'.", matchingSuperclasses.get(0).getName()));
         return matchingSuperclasses.get(0);
     }
 

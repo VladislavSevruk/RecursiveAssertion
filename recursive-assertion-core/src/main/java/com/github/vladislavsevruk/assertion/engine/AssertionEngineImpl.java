@@ -26,19 +26,15 @@ package com.github.vladislavsevruk.assertion.engine;
 import com.github.vladislavsevruk.assertion.context.AssertionContext;
 import com.github.vladislavsevruk.assertion.field.FieldVerificationConfiguration;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Implementation of <code>AssertionEngine</code>.
  *
  * @see AssertionEngine
  */
-@EqualsAndHashCode(exclude = "assertionContext")
+@Log4j2
 public final class AssertionEngineImpl implements AssertionEngine {
-
-    private static final Logger logger = LogManager.getLogger(AssertionEngineImpl.class);
 
     private AssertionContext assertionContext;
 
@@ -54,12 +50,12 @@ public final class AssertionEngineImpl implements AssertionEngine {
         for (FieldVerifier verifier : assertionContext.getFieldVerifierStorage().getAll()) {
             if (verifier.canVerify(fieldVerificationConfiguration.getVerificationField())) {
                 verifier.verify(fieldVerificationConfiguration);
-                logger.debug(() -> String.format("Using '%s' verifier for '%s' field.", verifier.getClass().getName(),
+                log.debug(() -> String.format("Using '%s' verifier for '%s' field.", verifier.getClass().getName(),
                         fieldVerificationConfiguration.getVerificationField().trace()));
                 return;
             }
         }
-        logger.warn(() -> String.format("Failed to find verifier for '%s', field will not be verified.",
+        log.warn(() -> String.format("Failed to find verifier for '%s', field will not be verified.",
                 fieldVerificationConfiguration.getVerificationField().trace()));
     }
 }
