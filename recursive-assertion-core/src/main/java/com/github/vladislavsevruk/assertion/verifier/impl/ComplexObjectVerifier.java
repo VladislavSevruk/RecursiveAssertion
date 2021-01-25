@@ -30,9 +30,7 @@ import com.github.vladislavsevruk.assertion.field.VerificationField;
 import com.github.vladislavsevruk.assertion.util.FieldPathMatcher;
 import com.github.vladislavsevruk.assertion.util.ReflectionUtil;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -41,10 +39,8 @@ import java.util.function.Predicate;
 /**
  * Verifies value of field with complex type.
  */
-@EqualsAndHashCode(exclude = "assertionContext")
+@Log4j2
 public class ComplexObjectVerifier implements FieldVerifier {
-
-    private static final Logger logger = LogManager.getLogger(ComplexObjectVerifier.class);
 
     private AssertionContext assertionContext;
 
@@ -66,7 +62,7 @@ public class ComplexObjectVerifier implements FieldVerifier {
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying complex model object.");
+        log.debug(() -> "Verifying complex model object.");
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         Class<?> clazz = verificationField.expected().getClass();
         Set<String> fieldsToIgnore = fieldVerificationConfiguration.getConfiguration().fieldsToIgnore();
@@ -89,16 +85,16 @@ public class ComplexObjectVerifier implements FieldVerifier {
             FieldTrace fieldTrace) {
         return field -> {
             if (ReflectionUtil.isStatic(field)) {
-                logger.debug(() -> String.format("Skipping static field '%s'.", field.getName()));
+                log.debug(() -> String.format("Skipping static field '%s'.", field.getName()));
                 return false;
             }
             if (fieldsToIgnore.contains(field.getName())) {
-                logger.debug(() -> String.format("Skipping '%s' field by name.", field.getName()));
+                log.debug(() -> String.format("Skipping '%s' field by name.", field.getName()));
                 return false;
             }
             FieldTrace innerFieldTrace = fieldTrace.field(field);
             if (FieldPathMatcher.isMatchAny(fieldPathsToIgnore, innerFieldTrace)) {
-                logger.debug(
+                log.debug(
                         () -> String.format("Skipping '%s' field by trace '%s'.", field.getName(), innerFieldTrace));
                 return false;
             }

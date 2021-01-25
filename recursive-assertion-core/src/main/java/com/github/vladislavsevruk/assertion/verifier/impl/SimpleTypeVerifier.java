@@ -28,17 +28,13 @@ import com.github.vladislavsevruk.assertion.field.VerificationField;
 import com.github.vladislavsevruk.assertion.util.ReflectionUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Verifies value of simple type.
  */
-@EqualsAndHashCode
+@Log4j2
 public class SimpleTypeVerifier implements FieldVerifier {
-
-    private static final Logger logger = LogManager.getLogger(SimpleTypeVerifier.class);
 
     /**
      * {@inheritDoc}
@@ -54,7 +50,7 @@ public class SimpleTypeVerifier implements FieldVerifier {
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying simple type value.");
+        log.debug(() -> "Verifying simple type value.");
         CommonSoftAssertion commonSoftAssertion = fieldVerificationConfiguration.getCommonSoftAssertion();
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         commonSoftAssertion.assertEquals(verificationField.actual(), verificationField.expected(),

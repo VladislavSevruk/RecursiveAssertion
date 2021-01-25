@@ -27,14 +27,12 @@ import com.github.vladislavsevruk.assertion.configuration.AssertionConfiguration
 import com.github.vladislavsevruk.assertion.util.ReflectionUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 
 /**
  * Abstract verifier for cases with 'null' value.
  */
-@EqualsAndHashCode
 public abstract class NullValueVerifier implements FieldVerifier {
 
     protected <T> void compareIfEmpty(CommonSoftAssertion commonSoftAssertion, T value, String trace) {

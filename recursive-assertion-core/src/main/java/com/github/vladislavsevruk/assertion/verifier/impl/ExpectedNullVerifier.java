@@ -27,17 +27,13 @@ import com.github.vladislavsevruk.assertion.configuration.AssertionConfiguration
 import com.github.vladislavsevruk.assertion.field.FieldVerificationConfiguration;
 import com.github.vladislavsevruk.assertion.field.VerificationField;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Verifies cases when expected value is 'null'.
  */
-@EqualsAndHashCode(callSuper = true)
+@Log4j2
 public class ExpectedNullVerifier extends NullValueVerifier {
-
-    private static final Logger logger = LogManager.getLogger(ExpectedNullVerifier.class);
 
     /**
      * {@inheritDoc}
@@ -52,21 +48,21 @@ public class ExpectedNullVerifier extends NullValueVerifier {
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying when expected value is 'null'.");
+        log.debug(() -> "Verifying when expected value is 'null'.");
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         T actual = verificationField.actual();
         String trace = verificationField.trace().getTrace();
         CommonSoftAssertion commonSoftAssertion = fieldVerificationConfiguration.getCommonSoftAssertion();
         AssertionConfiguration configuration = fieldVerificationConfiguration.getConfiguration();
         if (configuration.ignoreNullFields()) {
-            logger.debug(() -> "Skipping verification of expected 'null' value.");
+            log.debug(() -> "Skipping verification of expected 'null' value.");
             return;
         }
         if (shouldCompareIfEmpty(actual, configuration)) {
-            logger.debug(() -> "Verifying that actual value is empty collection or array.");
+            log.debug(() -> "Verifying that actual value is empty collection or array.");
             compareIfEmpty(commonSoftAssertion, actual, trace);
         } else {
-            logger.debug(() -> "Verifying that actual value is 'null' as well.");
+            log.debug(() -> "Verifying that actual value is 'null' as well.");
             commonSoftAssertion.assertEquals(verificationField.actual(), null, trace);
         }
     }

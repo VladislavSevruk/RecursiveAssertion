@@ -33,9 +33,7 @@ import com.github.vladislavsevruk.assertion.verifier.impl.ExpectedNullVerifier;
 import com.github.vladislavsevruk.assertion.verifier.impl.IterableVerifier;
 import com.github.vladislavsevruk.assertion.verifier.impl.MapVerifier;
 import com.github.vladislavsevruk.assertion.verifier.impl.SimpleTypeVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,11 +48,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @see FieldVerifier
  * @see FieldVerifierStorage
  */
-@EqualsAndHashCode
+@Log4j2
 public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
 
     private static final ReadWriteLock VERIFIERS_LOCK = new ReentrantReadWriteLock();
-    private static final Logger logger = LogManager.getLogger(FieldVerifierStorageImpl.class);
     private List<FieldVerifier> verifiers = new LinkedList<>();
 
     public FieldVerifierStorageImpl(AssertionContext assertionContext) {
@@ -79,7 +76,7 @@ public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
         VERIFIERS_LOCK.writeLock().lock();
         int targetTypeIndex = ClassUtil.getIndexOfType(verifiers, targetType);
         if (targetTypeIndex == -1) {
-            logger.info("Target type is not present at list, field verifier will be added to list end.");
+            log.info("Target type is not present at list, field verifier will be added to list end.");
             add(verifiers.size(), customFieldVerifier);
         } else {
             add(targetTypeIndex + 1, customFieldVerifier);
@@ -95,7 +92,7 @@ public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
         VERIFIERS_LOCK.writeLock().lock();
         int targetTypeIndex = ClassUtil.getIndexOfType(verifiers, targetType);
         if (targetTypeIndex == -1) {
-            logger.info("Target type is not present at list, field verifier will be added to list end.");
+            log.info("Target type is not present at list, field verifier will be added to list end.");
             add(verifiers.size(), customFieldVerifier);
         } else {
             add(targetTypeIndex, customFieldVerifier);
@@ -116,16 +113,15 @@ public final class FieldVerifierStorageImpl implements FieldVerifierStorage {
 
     private void add(int index, FieldVerifier customFieldVerifier) {
         if (customFieldVerifier == null) {
-            logger.info("Received field verifier is null so it will not be added.");
+            log.info("Received field verifier is null so it will not be added.");
             return;
         }
         int targetTypeIndex = ClassUtil.getIndexOfType(verifiers, customFieldVerifier.getClass());
         if (targetTypeIndex != -1) {
-            logger.info("Received field verifier is already present at list so it's copy will not be added.");
+            log.info("Received field verifier is already present at list so it's copy will not be added.");
             return;
         }
-        logger.debug(
-                () -> String.format("Added '%s' field verifier.", customFieldVerifier.getClass().getName()));
+        log.debug(() -> String.format("Added '%s' field verifier.", customFieldVerifier.getClass().getName()));
         verifiers.add(index, customFieldVerifier);
     }
 
