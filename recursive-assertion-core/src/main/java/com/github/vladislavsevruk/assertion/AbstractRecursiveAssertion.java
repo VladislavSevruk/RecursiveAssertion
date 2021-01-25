@@ -29,6 +29,7 @@ import com.github.vladislavsevruk.assertion.context.AssertionContextManager;
 import com.github.vladislavsevruk.assertion.field.FieldTrace;
 import com.github.vladislavsevruk.assertion.field.FieldVerificationConfiguration;
 import com.github.vladislavsevruk.assertion.field.VerificationField;
+import com.github.vladislavsevruk.assertion.util.ClassUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -151,7 +152,7 @@ public abstract class AbstractRecursiveAssertion<T, U extends AbstractRecursiveA
         }
         if (expected != null || !configuration.ignoreNullFields()) {
             VerificationField<T> verificationField = new VerificationField<>(actual, expected,
-                    new FieldTrace(getClassName(expected)));
+                    new FieldTrace(getModelName(expected)));
             FieldVerificationConfiguration<T> fieldVerificationConfiguration = new FieldVerificationConfiguration<>(
                     commonSoftAssertion, verificationField, configuration);
             AssertionContextManager.getContext().getAssertionEngine().compareObjects(fieldVerificationConfiguration);
@@ -183,12 +184,23 @@ public abstract class AbstractRecursiveAssertion<T, U extends AbstractRecursiveA
         return thisInstance();
     }
 
-    private String getClassName(T expectedValue) {
+    private String geClassName(Object value) {
+        Class<?> clazz = value.getClass();
+        if (Iterable.class.isAssignableFrom(clazz)) {
+            return ClassUtil.getCommonClass((Iterable<?>) value).getSimpleName();
+        }
+        if (clazz.isArray()) {
+            return ClassUtil.getCommonClass((Object[]) value).getSimpleName();
+        }
+        return clazz.getSimpleName();
+    }
+
+    private String getModelName(T expectedValue) {
         if (objectName != null) {
             return objectName;
         }
-        return Optional.ofNullable(expectedValue).map(value -> value.getClass().getSimpleName())
-                .orElseGet(() -> actual == null ? "null" : actual.getClass().getSimpleName());
+        return Optional.ofNullable(expectedValue).map(this::geClassName)
+                .orElseGet(() -> actual == null ? "null" : geClassName(actual));
     }
 
     @SuppressWarnings("unchecked")
