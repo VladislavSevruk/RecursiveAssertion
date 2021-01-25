@@ -32,17 +32,13 @@ import com.github.vladislavsevruk.assertion.util.FieldPathMatcher;
 import com.github.vladislavsevruk.assertion.util.ReflectionUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-@EqualsAndHashCode(exclude = "assertionContext")
+@Log4j2
 public abstract class ElementSequenceVerifier implements FieldVerifier {
-
-    private static final Logger logger = LogManager.getLogger(ElementSequenceVerifier.class);
 
     protected AssertionContext assertionContext;
 
@@ -56,7 +52,7 @@ public abstract class ElementSequenceVerifier implements FieldVerifier {
         FieldTrace itemIndexTrace = fieldTrace.index(index);
         FieldTrace itemTrace = itemIndexTrace;
         if (FieldPathMatcher.isMatchAny(configuration.fieldPathsToIgnore(), itemIndexTrace)) {
-            logger.debug(() -> String.format("Skipping element with '%s' field trace.", itemIndexTrace));
+            log.debug(() -> String.format("Skipping element with '%s' field trace.", itemIndexTrace));
             return;
         }
         if (identifierField != null && expectedSubObject != null) {
@@ -64,13 +60,13 @@ public abstract class ElementSequenceVerifier implements FieldVerifier {
             FieldTrace itemCustomIdTrace = fieldTrace.id(identifierField, expectedId);
             itemTrace = itemCustomIdTrace;
             if (FieldPathMatcher.isMatchAny(configuration.fieldPathsToIgnore(), itemCustomIdTrace)) {
-                logger.debug(() -> String.format("Skipping element with '%s' field trace.", itemCustomIdTrace));
+                log.debug(() -> String.format("Skipping element with '%s' field trace.", itemCustomIdTrace));
                 return;
             }
             if (actualSubObject != null) {
                 Object actualId = ReflectionUtil.getFieldValue(identifierField, actualSubObject);
                 if (shouldBreakOnIdInequality(configuration, actualId, expectedId)) {
-                    logger.debug("Breaking on id inequality.");
+                    log.debug("Breaking on id inequality.");
                     commonSoftAssertion.assertEquals(actualId, expectedId, itemTrace.field(identifierField).getTrace());
                     return;
                 }

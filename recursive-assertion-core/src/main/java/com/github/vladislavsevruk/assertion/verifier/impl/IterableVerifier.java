@@ -33,9 +33,7 @@ import com.github.vladislavsevruk.assertion.util.ReflectionUtil;
 import com.github.vladislavsevruk.assertion.util.SortUtil;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
 import com.github.vladislavsevruk.assertion.verifier.FieldVerifier;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -44,10 +42,8 @@ import java.util.stream.StreamSupport;
 /**
  * Verifies value of iterable type.
  */
-@EqualsAndHashCode(callSuper = true)
+@Log4j2
 public class IterableVerifier extends ElementSequenceVerifier implements FieldVerifier {
-
-    private static final Logger logger = LogManager.getLogger(IterableVerifier.class);
 
     public IterableVerifier(AssertionContext assertionContext) {
         super(assertionContext);
@@ -67,7 +63,7 @@ public class IterableVerifier extends ElementSequenceVerifier implements FieldVe
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying iterable.");
+        log.debug(() -> "Verifying iterable.");
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         Iterable<?> actualValues = (Iterable<?>) verificationField.actual();
         Iterable<?> expectedValues = (Iterable<?>) verificationField.expected();
@@ -75,7 +71,7 @@ public class IterableVerifier extends ElementSequenceVerifier implements FieldVe
         verifySize(commonSoftAssertion, actualValues, expectedValues, verificationField.trace());
         AssertionConfiguration assertionConfiguration = fieldVerificationConfiguration.getConfiguration();
         if (shouldBreakOnSizeInequality(assertionConfiguration, actualValues, expectedValues)) {
-            logger.debug(() -> "Breaking verifications on size inequality.");
+            log.debug(() -> "Breaking verifications on size inequality.");
             return;
         }
         verifyIterableElements(commonSoftAssertion, actualValues, expectedValues, assertionConfiguration,
@@ -108,7 +104,7 @@ public class IterableVerifier extends ElementSequenceVerifier implements FieldVe
             Iterable<?> expectedValues, AssertionConfiguration assertionConfiguration, FieldTrace fieldTrace) {
         Class<?> commonExpectedType = ClassUtil.getCommonClass(expectedValues);
         if (assertionConfiguration.sortCollections()) {
-            logger.debug("Sorting iterables.");
+            log.debug("Sorting iterables.");
             actualValues = SortUtil.sort(actualValues, assertionContext.getComparatorStorage());
             expectedValues = SortUtil.sort(expectedValues, assertionContext.getComparatorStorage(), commonExpectedType);
         }

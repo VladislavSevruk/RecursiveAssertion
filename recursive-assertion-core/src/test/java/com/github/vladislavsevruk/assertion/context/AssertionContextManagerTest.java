@@ -102,11 +102,12 @@ class AssertionContextManagerTest {
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
         Assertions.assertSame(assertionEngine, resolvingContext2.getAssertionEngine());
-        Assertions.assertEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -117,13 +118,13 @@ class AssertionContextManagerTest {
         AssertionModuleFactory.replaceComparatorStorage(context -> comparatorStorage);
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
-        Assertions.assertNotEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions.assertEquals(resolvingContext1.getAssertionEngine(), resolvingContext2.getAssertionEngine());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
         Assertions.assertSame(comparatorStorage, resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -134,13 +135,13 @@ class AssertionContextManagerTest {
         AssertionModuleFactory.replaceFieldVerifierStorage(context -> fieldVerifierStorage);
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
-        Assertions.assertNotEquals(resolvingContext1.getFieldVerifierStorage(),
-                resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertEquals(resolvingContext1.getAssertionEngine(), resolvingContext2.getAssertionEngine());
-        Assertions.assertEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
         Assertions.assertSame(fieldVerifierStorage, resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
+        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -151,12 +152,12 @@ class AssertionContextManagerTest {
         AssertionModuleFactory.replaceIdentifierFieldStorage(context -> identifierFieldStorage);
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
-        Assertions.assertNotEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
-        Assertions.assertEquals(resolvingContext1.getAssertionEngine(), resolvingContext2.getAssertionEngine());
-        Assertions.assertEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
         Assertions.assertSame(identifierFieldStorage, resolvingContext2.getIdentifierFieldStorage());
     }
 
@@ -166,7 +167,15 @@ class AssertionContextManagerTest {
         AssertionContextManager.refreshContext();
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotSame(resolvingContext1, resolvingContext2);
-        Assertions.assertEquals(resolvingContext1, resolvingContext2);
+        Assertions.assertEquals(resolvingContext1.getClass(), resolvingContext2.getClass());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
+        Assertions.assertSame(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -197,11 +206,12 @@ class AssertionContextManagerTest {
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
         Assertions.assertSame(assertionEngine, resolvingContext2.getAssertionEngine());
-        Assertions.assertEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -213,13 +223,13 @@ class AssertionContextManagerTest {
         AssertionContextManager.refreshContext();
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
-        Assertions.assertNotEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions.assertEquals(resolvingContext1.getAssertionEngine(), resolvingContext2.getAssertionEngine());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
         Assertions.assertSame(comparatorStorage, resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -227,17 +237,17 @@ class AssertionContextManagerTest {
         resetModulesAndContext();
         AssertionContextManager.disableContextAutoRefresh();
         AssertionContext resolvingContext1 = AssertionContextManager.getContext();
-        AssertionModuleFactory.replaceIdentifierFieldStorage(context -> identifierFieldStorage);
+        AssertionModuleFactory.replaceFieldVerifierStorage(context -> fieldVerifierStorage);
         AssertionContextManager.refreshContext();
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
-        Assertions.assertNotEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
-        Assertions.assertEquals(resolvingContext1.getAssertionEngine(), resolvingContext2.getAssertionEngine());
-        Assertions.assertEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
-        Assertions.assertSame(identifierFieldStorage, resolvingContext2.getIdentifierFieldStorage());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
+        Assertions.assertSame(fieldVerifierStorage, resolvingContext2.getFieldVerifierStorage());
+        Assertions.assertEquals(resolvingContext1.getIdentifierFieldStorage().getClass(),
+                resolvingContext2.getIdentifierFieldStorage().getClass());
     }
 
     @Test
@@ -249,12 +259,12 @@ class AssertionContextManagerTest {
         AssertionContextManager.refreshContext();
         AssertionContext resolvingContext2 = AssertionContextManager.getContext();
         Assertions.assertNotEquals(resolvingContext1, resolvingContext2);
-        Assertions.assertNotEquals(resolvingContext1.getIdentifierFieldStorage(),
-                resolvingContext2.getIdentifierFieldStorage());
-        Assertions.assertEquals(resolvingContext1.getAssertionEngine(), resolvingContext2.getAssertionEngine());
-        Assertions.assertEquals(resolvingContext1.getComparatorStorage(), resolvingContext2.getComparatorStorage());
-        Assertions
-                .assertEquals(resolvingContext1.getFieldVerifierStorage(), resolvingContext2.getFieldVerifierStorage());
+        Assertions.assertEquals(resolvingContext1.getAssertionEngine().getClass(),
+                resolvingContext2.getAssertionEngine().getClass());
+        Assertions.assertEquals(resolvingContext1.getComparatorStorage().getClass(),
+                resolvingContext2.getComparatorStorage().getClass());
+        Assertions.assertEquals(resolvingContext1.getFieldVerifierStorage().getClass(),
+                resolvingContext2.getFieldVerifierStorage().getClass());
         Assertions.assertSame(identifierFieldStorage, resolvingContext2.getIdentifierFieldStorage());
     }
 

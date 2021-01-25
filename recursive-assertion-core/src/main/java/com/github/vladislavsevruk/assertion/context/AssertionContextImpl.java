@@ -32,11 +32,9 @@ import com.github.vladislavsevruk.assertion.storage.FieldVerifierStorageImpl;
 import com.github.vladislavsevruk.assertion.storage.IdentifierFieldStorage;
 import com.github.vladislavsevruk.assertion.storage.IdentifierFieldStorageImpl;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Implementation of <code>AssertionContext</code>.
@@ -44,11 +42,9 @@ import org.apache.logging.log4j.Logger;
  * @see AssertionContext
  */
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@Log4j2
 @Getter
-@EqualsAndHashCode
 final class AssertionContextImpl implements AssertionContext {
-
-    private static final Logger logger = LogManager.getLogger(AssertionContextImpl.class);
 
     AssertionEngine assertionEngine;
     ComparatorStorage comparatorStorage;
@@ -72,15 +68,15 @@ final class AssertionContextImpl implements AssertionContext {
             AssertionModuleFactoryMethod<FieldVerifierStorage> fieldVerifierStorageFactoryMethod,
             AssertionModuleFactoryMethod<IdentifierFieldStorage> identifierFieldStorageFactoryMethod) {
         this.assertionEngine = orDefault(assertionEngineFactoryMethod, AssertionEngineImpl::new);
-        logger.debug(() -> String.format("Using '%s' as assertion engine.", assertionEngine.getClass().getName()));
+        log.debug(() -> String.format("Using '%s' as assertion engine.", assertionEngine.getClass().getName()));
         this.comparatorStorage = orDefault(comparatorStorageFactoryMethod, context -> new ComparatorStorageImpl());
-        logger.debug(() -> String.format("Using '%s' as comparator storage.", comparatorStorage.getClass().getName()));
+        log.debug(() -> String.format("Using '%s' as comparator storage.", comparatorStorage.getClass().getName()));
         this.fieldVerifierStorage = orDefault(fieldVerifierStorageFactoryMethod, FieldVerifierStorageImpl::new);
-        logger.debug(() -> String
+        log.debug(() -> String
                 .format("Using '%s' as field verifier storage.", fieldVerifierStorage.getClass().getName()));
         this.identifierFieldStorage = orDefault(identifierFieldStorageFactoryMethod,
                 context -> new IdentifierFieldStorageImpl());
-        logger.debug(() -> String
+        log.debug(() -> String
                 .format("Using '%s' as identifier field storage.", fieldVerifierStorage.getClass().getName()));
     }
 

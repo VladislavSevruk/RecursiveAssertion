@@ -30,8 +30,7 @@ import com.github.vladislavsevruk.assertion.field.FieldTrace;
 import com.github.vladislavsevruk.assertion.field.FieldVerificationConfiguration;
 import com.github.vladislavsevruk.assertion.field.VerificationField;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Optional;
 
@@ -41,9 +40,8 @@ import java.util.Optional;
  * @param <T> type of value to verify.
  * @param <U> descendant type to return for chain method call.
  */
+@Log4j2
 public abstract class AbstractRecursiveAssertion<T, U extends AbstractRecursiveAssertion<T, U>> {
-
-    private static final Logger logger = LogManager.getLogger(AbstractRecursiveAssertion.class);
 
     private T actual;
     private CommonSoftAssertion commonSoftAssertion;
@@ -147,20 +145,20 @@ public abstract class AbstractRecursiveAssertion<T, U extends AbstractRecursiveA
         if (useHardAssertion) {
             commonSoftAssertion = newCommonAssertion();
         } else {
-            logger.debug("Using soft assertions received from user.");
+            log.debug("Using soft assertions received from user.");
         }
         if (expected != null || !configuration.ignoreNullFields()) {
             VerificationField<T> verificationField = new VerificationField<>(actual, expected,
-                    new FieldTrace(getClassName(expected)));
+                    new FieldTrace(getModelName(expected)));
             FieldVerificationConfiguration<T> fieldVerificationConfiguration = new FieldVerificationConfiguration<>(
                     commonSoftAssertion, verificationField, configuration);
             AssertionContextManager.getContext().getAssertionEngine().compareObjects(fieldVerificationConfiguration);
             if (useHardAssertion) {
-                logger.debug("There is no soft assertions received from user. Asserting all verifications.");
+                log.debug("There is no soft assertions received from user. Asserting all verifications.");
                 commonSoftAssertion.assertAll();
             }
         } else {
-            logger.info("Received expected model is 'null'. Ignoring verifications according to ignoreNull rule.");
+            log.info("Received expected model is 'null'. Ignoring verifications according to ignoreNull rule.");
         }
     }
 
@@ -183,7 +181,7 @@ public abstract class AbstractRecursiveAssertion<T, U extends AbstractRecursiveA
         return thisInstance();
     }
 
-    private String getClassName(T expectedValue) {
+    private String getModelName(T expectedValue) {
         if (objectName != null) {
             return objectName;
         }

@@ -27,8 +27,7 @@ import com.github.vladislavsevruk.assertion.engine.AssertionEngine;
 import com.github.vladislavsevruk.assertion.storage.ComparatorStorage;
 import com.github.vladislavsevruk.assertion.storage.FieldVerifierStorage;
 import com.github.vladislavsevruk.assertion.storage.IdentifierFieldStorage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -36,13 +35,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Provides replaceable modules schemas required for assertion mechanism.
  */
+@Log4j2
 public final class AssertionModuleFactory {
 
     private static final ReadWriteLock ASSERTION_ENGINE_LOCK = new ReentrantReadWriteLock();
     private static final ReadWriteLock COMPARATOR_STORAGE_LOCK = new ReentrantReadWriteLock();
     private static final ReadWriteLock FIELD_VERIFIER_STORAGE_LOCK = new ReentrantReadWriteLock();
     private static final ReadWriteLock IDENTIFIER_FIELD_STORAGE_LOCK = new ReentrantReadWriteLock();
-    private static final Logger logger = LogManager.getLogger(AssertionModuleFactory.class);
     private static AssertionModuleFactoryMethod<AssertionEngine> assertionEngine;
     private static AssertionModuleFactoryMethod<ComparatorStorage> comparatorStorage;
     private static AssertionModuleFactoryMethod<FieldVerifierStorage> fieldVerifierStorage;
@@ -101,7 +100,7 @@ public final class AssertionModuleFactory {
      */
     public static void replaceAssertionEngine(AssertionModuleFactoryMethod<AssertionEngine> engine) {
         ASSERTION_ENGINE_LOCK.writeLock().lock();
-        logger.info(() -> String
+        log.info(() -> String
                 .format("Replacing AssertionEngine by '%s'.", engine == null ? null : engine.getClass().getName()));
         AssertionModuleFactory.assertionEngine = engine;
         ASSERTION_ENGINE_LOCK.writeLock().unlock();
@@ -118,7 +117,7 @@ public final class AssertionModuleFactory {
      */
     public static void replaceComparatorStorage(AssertionModuleFactoryMethod<ComparatorStorage> storage) {
         COMPARATOR_STORAGE_LOCK.writeLock().lock();
-        logger.info(() -> String
+        log.info(() -> String
                 .format("Replacing ComparatorStorage by '%s'.", storage == null ? null : storage.getClass().getName()));
         AssertionModuleFactory.comparatorStorage = storage;
         COMPARATOR_STORAGE_LOCK.writeLock().unlock();
@@ -135,7 +134,7 @@ public final class AssertionModuleFactory {
      */
     public static void replaceFieldVerifierStorage(AssertionModuleFactoryMethod<FieldVerifierStorage> storage) {
         FIELD_VERIFIER_STORAGE_LOCK.writeLock().lock();
-        logger.info(() -> String.format("Replacing FieldVerifierStorage by '%s'.",
+        log.info(() -> String.format("Replacing FieldVerifierStorage by '%s'.",
                 storage == null ? null : storage.getClass().getName()));
         AssertionModuleFactory.fieldVerifierStorage = storage;
         FIELD_VERIFIER_STORAGE_LOCK.writeLock().unlock();
@@ -152,7 +151,7 @@ public final class AssertionModuleFactory {
      */
     public static void replaceIdentifierFieldStorage(AssertionModuleFactoryMethod<IdentifierFieldStorage> storage) {
         IDENTIFIER_FIELD_STORAGE_LOCK.writeLock().lock();
-        logger.info(() -> String.format("Replacing IdentifierFieldStorage by '%s'.",
+        log.info(() -> String.format("Replacing IdentifierFieldStorage by '%s'.",
                 storage == null ? null : storage.getClass().getName()));
         AssertionModuleFactory.identifierFieldStorage = storage;
         IDENTIFIER_FIELD_STORAGE_LOCK.writeLock().unlock();

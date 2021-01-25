@@ -24,9 +24,7 @@
 package com.github.vladislavsevruk.assertion.storage;
 
 import com.github.vladislavsevruk.assertion.util.ClassUtil;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,11 +37,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see Comparator
  * @see ComparatorStorage
  */
-@EqualsAndHashCode
+@Log4j2
 public final class ComparatorStorageImpl implements ComparatorStorage {
 
     private static final Comparator<Object> HASH_CODE_COMPARATOR = getHashCodeComparator();
-    private static final Logger logger = LogManager.getLogger(ComparatorStorageImpl.class);
     private Map<Class<?>, Comparator<?>> comparatorMap = new ConcurrentHashMap<>();
 
     /**
@@ -52,10 +49,10 @@ public final class ComparatorStorageImpl implements ComparatorStorage {
     @Override
     public <T> void add(Class<T> clazz, Comparator<? super T> comparator) {
         if (clazz != null && comparator != null) {
-            logger.debug(() -> String.format("Added comparator for '%s' class.", clazz.getName()));
+            log.debug(() -> String.format("Added comparator for '%s' class.", clazz.getName()));
             comparatorMap.put(clazz, comparator);
         } else {
-            logger.info(() -> {
+            log.info(() -> {
                 String classMessage = clazz == null ? " Received class is null." : "";
                 String comparatorMessage = comparator == null ? " Received comparator is null." : "";
                 return String.format("Comparator wasn't added to storage:%s%s", classMessage, comparatorMessage);
@@ -70,18 +67,18 @@ public final class ComparatorStorageImpl implements ComparatorStorage {
     @SuppressWarnings("unchecked")
     public <T> Comparator<? super T> get(Class<? extends T> clazz) {
         if (clazz == null) {
-            logger.debug("Received class is 'null'. Returning hashCode comparator.");
+            log.debug("Received class is 'null'. Returning hashCode comparator.");
             return HASH_CODE_COMPARATOR;
         }
         Comparator<T> exactMatchComparator = (Comparator<T>) comparatorMap.get(clazz);
         if (exactMatchComparator != null) {
-            logger.debug(() -> String.format("Found exact matching comparator for '%s' class.", clazz.getName()));
+            log.debug(() -> String.format("Found exact matching comparator for '%s' class.", clazz.getName()));
             return exactMatchComparator;
         }
-        logger.debug(() -> String.format("There is no exact matching comparator for '%s' class.", clazz.getName()));
+        log.debug(() -> String.format("There is no exact matching comparator for '%s' class.", clazz.getName()));
         List<Class<?>> matchingSuperclasses = ClassUtil.getSuperclasses(clazz, comparatorMap.keySet());
         if (matchingSuperclasses.isEmpty()) {
-            logger.debug(() -> String
+            log.debug(() -> String
                     .format("There is no matching comparator for '%s' class. Returning hashCode comparator.",
                             clazz.getName()));
             return HASH_CODE_COMPARATOR;

@@ -26,17 +26,13 @@ package com.github.vladislavsevruk.assertion.verifier.impl;
 import com.github.vladislavsevruk.assertion.field.FieldVerificationConfiguration;
 import com.github.vladislavsevruk.assertion.field.VerificationField;
 import com.github.vladislavsevruk.assertion.verifier.CommonSoftAssertion;
-import lombok.EqualsAndHashCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Verifies cases when actual value is 'null'.
  */
-@EqualsAndHashCode(callSuper = true)
+@Log4j2
 public class ActualNullVerifier extends NullValueVerifier {
-
-    private static final Logger logger = LogManager.getLogger(ActualNullVerifier.class);
 
     /**
      * {@inheritDoc}
@@ -51,16 +47,16 @@ public class ActualNullVerifier extends NullValueVerifier {
      */
     @Override
     public <T> void verify(final FieldVerificationConfiguration<T> fieldVerificationConfiguration) {
-        logger.debug(() -> "Verifying when actual value is 'null'.");
+        log.debug(() -> "Verifying when actual value is 'null'.");
         VerificationField<T> verificationField = fieldVerificationConfiguration.getVerificationField();
         String trace = verificationField.trace().getTrace();
         T expected = verificationField.expected();
         CommonSoftAssertion commonSoftAssertion = fieldVerificationConfiguration.getCommonSoftAssertion();
         if (shouldCompareIfEmpty(expected, fieldVerificationConfiguration.getConfiguration())) {
-            logger.debug(() -> "Verifying that expected value is empty collection or array.");
+            log.debug(() -> "Verifying that expected value is empty collection or array.");
             compareIfEmpty(commonSoftAssertion, expected, trace);
         } else {
-            logger.debug(() -> "Verifying that expected value is 'null' as well.");
+            log.debug(() -> "Verifying that expected value is 'null' as well.");
             commonSoftAssertion.assertEquals(null, expected, trace);
         }
     }
